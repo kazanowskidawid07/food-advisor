@@ -3,6 +3,7 @@ body {
     color: #3D2B1F;
     font-family: Arial, sans-serif;
     margin: 0;
+}
 
     /* Header */
 header {
@@ -56,7 +57,7 @@ footer {
     padding: 20px;
     background-color: #F4A261;
 }
-}
+
 nav a:hover {
     color: white;
     text-decoration: underline;
@@ -65,4 +66,33 @@ nav a:hover {
 .explore-button:hover {
     background-color: #D65A3A;
     transition: 0.3s;
+}
+
+.star {
+    font-size: 50px;
+    cursor: pointer;
+    color: #E76F51
+}
+
+.star:hover{
+    color: #D65A3A
+}
+
+#reviewTextBox {
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+}
+
+#submitReview {
+    background-color: #E76F51;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+#submitReview:hover {
+    background-color: #D65A3A;
 }
