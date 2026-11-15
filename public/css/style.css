@@ -96,3 +96,40 @@ nav a:hover {
 #submitReview:hover {
     background-color: #D65A3A;
 }
+
+/* Restaurant search panel */
+.search-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    max-width: 800px;
+    margin: 30px auto;
+    padding: 25px;
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+}
+
+.restaurant-search {
+    grid-column: 1 / -1;
+    padding: 12px;
+    border: 1px solid #DDD;
+    border-radius: 6px;
+    font-size: 16px;
+}
+
+.search-container select {
+    padding: 12px;
+    border: 1px solid #DDD;
+    border-radius: 6px;
+    background-color: #FFF7ED;
+    color: #3D2B1F;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+.search-container input:focus,
+.search-container select:focus {
+    outline: 2px solid #F4A261;
+    border-color: #F4A261;
+}
