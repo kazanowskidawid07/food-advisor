@@ -4,6 +4,9 @@ const db = require('./db');
 
 const app = express();
 
+app.use(express.json()) // This allows your server to read incoming JSON data when the
+                        // frontend submits forms or data (like new reviews or user signups).
+
 const PORT = 3000;
 
 // Test route
