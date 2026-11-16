@@ -195,3 +195,19 @@ nav a:hover {
     background-color: #D65A3A;
     transition: 0.3s;
 }
+
+.view-button {
+    display: inline-block;
+    background-color: #E76F51;
+    color: white;
+    padding: 10px 18px;
+    text-decoration: none;
+    border-radius: 6px;
+    margin: 10px 0 15px;
+    font-weight: bold;
+}
+
+.view-button:hover {
+    background-color: #D65A3A;
+    transition: 0.3s;
+}
