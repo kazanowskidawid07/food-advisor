@@ -8,12 +8,9 @@
     <link rel="stylesheet" href="../css/style.css">
     <link rel="stylesheet" href="../css/response.css">
 </head>
-
 <body>
-
     <header>
         <h1>Food Advisor</h1>
-
         <nav>
             <a href="home.html">Home</a>
             <a href="restaurants-page.html">Restaurants</a>
@@ -21,78 +18,59 @@
             <a href="register.html">Register</a>
         </nav>
     </header>
-
     <main>
-
         <h2>Admin Dashboard</h2>
         <p>Manage users, restaurants and reviews.</p>
-
-        <section class="menu-section">
-            <h2>Manage Users</h2>
-
-            <div class="menu-item">
-                <h3>User Accounts</h3>
-                <p>View and manage customer and owner accounts.</p>
-
-                <label for="userSearch">Search Users:</label>
-                <input type="text" id="userSearch" placeholder="Enter username">
-
-                <br><br>
-
-                <button type="button" class="view-button">Search</button>
-
-                <div id="usersList">
-                    <p>User accounts will appear here.</p>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 350px), 1fr)); gap: 20px;">
+            <section class="menu-section">
+                <h2>Manage Users</h2>
+                <div class="menu-item">
+                    <h3>User Accounts</h3>
+                    <p>View and manage customer and owner accounts.</p>
+                    <label for="userSearch">Search Users:</label>
+                    <input type="text" id="userSearch" placeholder="Enter username">
+                    <br><br>
+                    <button type="button" class="view-button">Search</button>
+                    <div id="usersList">
+                        <p>User accounts will appear here.</p>
+                    </div>
                 </div>
-            </div>
-        </section>
-
-        <section class="menu-section">
-            <h2>Manage Restaurants</h2>
-
-            <div class="menu-item">
-                <h3>Restaurant Listings</h3>
-                <p>View and manage restaurants on Food Advisor.</p>
-
-                <a href="restaurants-page.html" class="view-button">View Restaurants</a>
-
-                <div id="restaurantsList">
-                    <p>Restaurant management options will appear here.</p>
+            </section>
+            <section class="menu-section">
+                <h2>Manage Restaurants</h2>
+                <div class="menu-item">
+                    <h3>Restaurant Listings</h3>
+                    <p>View and manage restaurants on Food Advisor.</p>
+                    <a href="restaurants-page.html" class="view-button">View Restaurants</a>
+                    <div id="restaurantsList">
+                        <p>Restaurant management options will appear here.</p>
+                    </div>
                 </div>
-            </div>
-        </section>
-
-        <section class="menu-section">
-            <h2>Manage Reviews</h2>
-
-            <div class="menu-item">
-                <h3>Customer Reviews</h3>
-                <p>View reviews and remove inappropriate content.</p>
-
-                <div id="reviewsList">
-                    <p>Customer reviews will appear here.</p>
+            </section>
+            <section class="menu-section">
+                <h2>Manage Reviews</h2>
+                <div class="menu-item">
+                    <h3>Customer Reviews</h3>
+                    <p>View reviews and remove inappropriate content.</p>
+                    <div id="reviewsList">
+                        <p>Customer reviews will appear here.</p>
+                    </div>
                 </div>
-            </div>
-        </section>
-
-        <section class="menu-section">
-            <h2>Manage Menus</h2>
-
-            <div class="menu-item">
-                <h3>Restaurant Menus</h3>
-                <p>View and manage restaurant menus and prices.</p>
-
-                <div id="menusList">
-                    <p>Restaurant menus will appear here.</p>
+            </section>
+            <section class="menu-section">
+                <h2>Manage Menus</h2>
+                <div class="menu-item">
+                    <h3>Restaurant Menus</h3>
+                    <p>View and manage restaurant menus and prices.</p>
+                    <div id="menusList">
+                        <p>Restaurant menus will appear here.</p>
+                    </div>
                 </div>
-            </div>
-        </section>
-
+            </section>
+        </div>
     </main>
-
     <footer>
         <p>&copy; 2026 Food Advisor. All rights reserved.</p>
     </footer>
-
 </body>
 </html>
