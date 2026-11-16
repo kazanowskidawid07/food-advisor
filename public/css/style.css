@@ -149,3 +149,17 @@ nav a:hover {
     box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
     margin: 20px;
 }
+
+.restaurant-list {
+    padding: 30px;
+    text-align: center;
+}
+
+.restaurant-list h2 {
+    margin-bottom: 25px;
+}
+
+.restaurant-card {
+    display: inline-block;
+    vertical-align: top;
+}
