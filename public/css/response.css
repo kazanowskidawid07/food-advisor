@@ -26,4 +26,68 @@
     .hero p {
         font-size: 16px;
     }
+
+    
+    .restaurant-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .restaurant-card {
+        width: calc(100% - 30px);
+        max-width: 400px;
+        margin: 10px 0;
+        box-sizing: border-box;
+    }
+
+    .restaurant-card img {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+    }
+
+  
+    .filter-container {
+        flex-direction: column;
+        align-items: stretch;
+        padding: 15px;
+    }
+
+    .cuisine-filter,
+    .price-filter,
+    .dietary-filter,
+    .location-filter {
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+   
+    .restaurant-info,
+    .menu-section {
+        padding: 15px;
+    }
+
+    .menu-item {
+        width: 100%;
+        max-width: 400px;
+        box-sizing: border-box;
+    }
+
+    .login-container {
+        width: calc(100% - 30px);
+        margin: 30px auto;
+        padding: 20px;
+        box-sizing: border-box;
+    }
+
+    .form-group input {
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    footer {
+        padding: 15px;
+        font-size: 14px;
+    }
 }
+
