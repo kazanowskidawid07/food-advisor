@@ -157,6 +157,7 @@ nav a:hover {
     align-items: flex-start;
     gap: 25px;
     padding: 30px;
+    text-align: center;
 }
 
 .restaurant-list h2 {
@@ -170,4 +171,27 @@ nav a:hover {
     border-radius: 12px;
     overflow: hidden;
     box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+}
+
+.restaurant-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 25px;
+}
+
+.view-button {
+    display: inline-block;
+    background-color: #E76F51;
+    color: white;
+    padding: 10px 18px;
+    text-decoration: none;
+    border-radius: 6px;
+    margin: 10px 0 15px;
+    font-weight: bold;
+}
+
+.view-button:hover {
+    background-color: #D65A3A;
+    transition: 0.3s;
 }
