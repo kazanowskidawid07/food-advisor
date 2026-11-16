@@ -147,12 +147,16 @@ nav a:hover {
     border-radius: 12px;
     overflow: hidden;
     box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
-    margin: 20px;
 }
 
 .restaurant-list {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 25px;
     padding: 30px;
-    text-align: center;
 }
 
 .restaurant-list h2 {
@@ -160,6 +164,10 @@ nav a:hover {
 }
 
 .restaurant-card {
-    display: inline-block;
-    vertical-align: top;
+    width: 280px;
+    flex-shrink: 0;
+    background-color: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
 }
