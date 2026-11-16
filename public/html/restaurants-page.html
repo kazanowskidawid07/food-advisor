@@ -35,21 +35,23 @@
         </div>
     </section>
 
-    <select class="cuisine-filter">
+    <h2>Available Restaurants</h2>
+    
+    <SELECT id="cuisineFilter" class="cuisine-filter">
     <option value="">All cuisines</option>
     <option value="italian">Italian</option>
     <option value="chinese">Chinese</option>
     <option value="indian">Indian</option>
 </select>
 
-<select class="price-filter">
+<select  id= "price-filter" class="price-filter">
     <option value="">All prices</option>
     <option value="budget">Budget</option>
     <option value="moderate">Moderate</option>
     <option value="expensive">Expensive</option>
 </select>
 
-<select class="dietary-filter">
+<select  id = "dietary-filter" class ="dietary-filter">
     <option value="">Dietary Preferences</option>
     <option value="vegetarian">Vegetarian</option>
     <option value="vegan">Vegan</option>
@@ -57,19 +59,19 @@
     <option value="halal">Halal</option>
 </select>
 
-<select class="location-filter">
+<select  id = "location-filter" class="location-filter">
     <option value="">All locations</option>
     <option value="edinburgh">Edinburgh</option>
     <option value="glasgow">Glasgow</option>
     <option value="stirling">Stirling</option>
 </select>
 
-<section class="restaurant-list">
-    <h2>Available Restaurants</h2>
+<section  id = "restaurant-list" class="restaurant-list">
+    
 
     <div class="restaurant-container">
 
-        <div class="restaurant-card">
+        <div class="restaurant-card" data-cuisine="indian">
             <img src="../images/indian-food.jpg"
                  alt="Indian cuisine">
 
@@ -80,7 +82,7 @@
             <a href="restaurant-details.html" class="view-button"> View Restaurant </a>
         </div>
 
-        <div class="restaurant-card">
+        <div class="restaurant-card" data-cuisine="italian">
             <img src="../images/italian-food.jpg"
                  alt="Italian cuisine">
 
@@ -91,7 +93,7 @@
             <a href="restaurant-details.html" class="view-button"> View Restaurant </a>
         </div>
 
-        <div class="restaurant-card">
+        <div class="restaurant-card"data-cuisine="chinese">
             <img src="../images/chinese-food.jpg"
                  alt="Chinese cuisine">
 
@@ -110,5 +112,7 @@
     <p>&copy; 2026 Food Advisor. All rights reserved.</p>
 </footer>
     
+
+<script src="../js/search.js"></script>
 </body>
 </html>
