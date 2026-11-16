@@ -116,6 +116,7 @@ nav a:hover {
 
 .restaurant-search {
     grid-column: 1 / -1;
+    margin: 12px;
     padding: 12px;
     border: 1px solid #DDD;
     border-radius: 6px;
@@ -311,7 +312,7 @@ nav a:hover {
 .price-filter,
 .dietary-filter,
 .location-filter {
-    background-color: #FFF7ED;
+    background-color: #E76F51;
     color: #3D2B1F;
     border: 1px solid #E76F51;
     border-radius: 8px;
@@ -321,8 +322,26 @@ nav a:hover {
     cursor: pointer;
     margin: 5px;
     outline: none;
+    color: white;
+    
 }
+.cuisine-filter:hover,
+.price-filter:hover,
+.dietary-filter:hover,
+.location-filter:hover {
+    background-color: #D65A3A;
+    color: #3D2B1F;
+    border: 1px solid #D65A3A;
+    border-radius: 8px;
+    padding: 12px;
+    font-size: 15px;
+    font-family: Arial, sans-serif;
+    cursor: pointer;
+    margin: 5px;
+    outline: none;
+    color: white;
 
+}
 .cuisine-filter:focus,
 .price-filter:focus,
 .dietary-filter:focus,
