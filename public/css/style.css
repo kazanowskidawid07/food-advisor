@@ -334,3 +334,66 @@ nav a:hover {
     border-color: #D65A3A;
     box-shadow: 0 0 5px rgba(231, 111, 81, 0.4);
 }
+
+.restaurant-top {
+    display: flex;
+    justify-content: space-between;
+    gap: 40px;
+    margin-bottom: 50px;
+}
+#restaurant-info{
+    flex: 1;
+    background-color: white;
+    padding: 20px;
+
+    border-radius: 12px;
+
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+#review-section{
+    flex: 1;
+    background-color: white;
+    padding: 20px;
+
+    border-radius: 12px;
+
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+#reviews-section {
+    max-width: 900px;
+    margin: 50px auto;
+}
+
+#reviews-section h2 {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+#reviews-container {
+    background-color: white;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.review-card {
+
+    background-color: #FFF7ED;
+
+    padding: 15px;
+
+    margin-top: 15px;
+
+    border-radius: 8px;
+
+}
+
+.review-card h3 {
+
+    color: #E76F51;
+
+    margin-bottom: 10px;
+
+}
