@@ -29,66 +29,66 @@
     <main>
         <h2>Restaurant Owner Dashboard</h2>
         <p>Manage your restaurant information and menu.</p>
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 350px), 1fr)); gap: 20px;">
-            <section class="menu-section">
-                <h2>Restaurant Details</h2>
-                <div class="menu-item">
-                    <h3>Add or Edit Restaurant</h3>
-                    <form id="restaurantForm">
-                        <label for="restaurantName">Restaurant Name:</label>
-                        <input type="text" id="restaurantName" required>
-                        <br><br>
-                        <label for="cuisine">Cuisine:</label>
-                        <input type="text" id="cuisine" placeholder="e.g. Italian">
-                        <br><br>
-                        <label for="location">Location:</label>
-                        <input type="text" id="location" required>
-                        <br><br>
-                        <label for="openingHours">Opening Hours:</label>
-                        <input type="text" id="openingHours" placeholder="e.g. 9am - 10pm">
-                        <br><br>
-                        <button type="submit" class="view-button">Save Restaurant</button>
-                    </form>
-                </div>
-            </section>
-            <section class="menu-section">
-                <h2>Manage Menu</h2>
-                <div class="menu-item">
-                    <h3>Add Menu Item</h3>
-                    <form id="menuForm">
-                        <label for="itemName">Food Item:</label>
-                        <input type="text" id="itemName" required>
-                        <br><br>
-                        <label for="description">Description:</label>
-                        <input type="text" id="description">
-                        <br><br>
-                        <label for="price">Price (£):</label>
-                        <input type="number" id="price" min="0" step="0.01" required>
-                        <br><br>
-                        <button type="submit" class="view-button">Add Menu Item</button>
-                    </form>
-                </div>
-            </section>
-            <section class="menu-section">
-                <h2>Current Menu</h2>
-                <div class="menu-item" id="menuList">
-                    <p>Your menu items will appear here.</p>
-                </div>
-            </section>
-            <section class="menu-section">
-                <h2>Customer Reviews</h2>
-                <div class="menu-item">
-                    <h3>Restaurant Reviews</h3>
-                    <p>View customer ratings and feedback.</p>
-                    <div id="reviewsList">
-                        <p>Customer reviews will appear here.</p>
+        <div>
+            <div class="dashboard-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; min-width: 750px;">
+                <section class="menu-section" style="padding: 15px; display: flex; flex-direction: column;">
+                    <h2>Restaurant Details</h2>
+                    <div class="menu-item" style="width: 100%; max-width: none; height: 380px; box-sizing: border-box;">
+                        <h3>Add or Edit Restaurant</h3>
+                        <form id="restaurantForm">
+                            <div style="display: grid; grid-template-columns: 140px 160px; gap: 20px 10px; justify-content: center; align-items: center;">
+                                <label for="restaurantName" style="text-align: left;">Restaurant Name:</label>
+                                <input type="text" id="restaurantName" required>
+                                <label for="cuisine" style="text-align: left;">Cuisine:</label>
+                                <input type="text" id="cuisine" placeholder="e.g. Italian">
+                                <label for="location" style="text-align: left;">Location:</label>
+                                <input type="text" id="location" required>
+                                <label for="openingHours" style="text-align: left;">Opening Hours:</label>
+                                <input type="text" id="openingHours" placeholder="e.g. 9am - 10pm">
+                            </div>
+                            <button type="submit" class="view-button" style="margin-top: 25px;">Save Restaurant</button>
+                        </form>
                     </div>
-                </div>
-            </section>
+                </section>
+                <section class="menu-section" style="padding: 15px; display: flex; flex-direction: column;">
+                    <h2>Manage Menu</h2>
+                    <div class="menu-item" style="width: 100%; max-width: none; height: 380px; box-sizing: border-box;">
+                        <h3>Add Menu Item</h3>
+                        <form id="menuForm">
+                            <div style="display: grid; grid-template-columns: 140px 160px; gap: 20px 10px; justify-content: center; align-items: center;">
+                                <label for="itemName" style="text-align: left;">Food Item:</label>
+                                <input type="text" id="itemName" required>
+                                <label for="description" style="text-align: left;">Description:</label>
+                                <input type="text" id="description">
+                                <label for="price" style="text-align: left;">Price (£):</label>
+                                <input type="number" id="price" min="0" step="0.01" required>
+                            </div>
+                            <button type="submit" class="view-button" style="margin-top: 25px;">Add Menu Item</button>
+                        </form>
+                    </div>
+                </section>
+                <section class="menu-section" style="padding: 15px; display: flex; flex-direction: column;">
+                    <h2>Current Menu</h2>
+                    <div class="menu-item" id="menuList" style="width: 100%; max-width: none; height: 380px; box-sizing: border-box;">
+                        <p>Your menu items will appear here.</p>
+                    </div>
+                </section>
+                <section class="menu-section" style="padding: 15px; display: flex; flex-direction: column;">
+                    <h2>Customer Reviews</h2>
+                    <div class="menu-item" style="width: 100%; max-width: none; height: 380px; box-sizing: border-box;">
+                        <h3>Restaurant Reviews</h3>
+                        <p>View customer ratings and feedback.</p>
+                        <div id="reviewsList">
+                            <p>Customer reviews will appear here.</p>
+                        </div>
+                    </div>
+                </section>
+            </div>
         </div>
     </main>
     <footer>
         <p>&copy; 2026 Food Advisor. All rights reserved.</p>
     </footer>
+    <script src="../js/auth.js"></script>
 </body>
 </html>
