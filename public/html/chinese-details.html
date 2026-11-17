@@ -28,7 +28,10 @@
             ← Back to Restaurants
         </a>
 
-        <section class="restaurant-info">
+
+          <div class = "restaurant-top" >
+
+        <section id="restaurant-info">
 
             <h2>Chinese Restaurant</h2>
 
@@ -39,7 +42,39 @@
             <p><strong>Rating:</strong> 5/5</p>
 
         </section>
+        <section id = "review-section">
 
+    <h2>Leave a Review</h2>
+
+    <div id="stars">
+
+        <span class="star">☆</span>
+        <span class="star">☆</span>
+        <span class="star">☆</span>
+        <span class="star">☆</span>
+        <span class="star">☆</span>
+
+    </div>
+
+    <p>
+        Rating:
+        <span id="ratingValue">0</span>/5
+    </p>
+
+    <textarea
+        id="reviewText"
+        rows="5"
+        cols="50"
+        placeholder="Write your review here..."></textarea>
+
+    <br><br>
+
+    <button id="submitReview">
+        Submit Review
+    </button>
+    </section>
+
+        </div>
         <section class="menu-section">
 
             <h2>Our Menu</h2>
@@ -63,12 +98,23 @@
             </div>
 
         </section>
+        <section id="reviews-section">
+
+    <h2>Customer Reviews</h2>
+
+    <div id="reviews-container">
+
+        <p>Read some of the reviews left by other customers!</p>
+
+    </div>
+
+</section>
 
     </main>
 
     <footer>
         <p>&copy; 2026 Food Advisor. All rights reserved.</p>
     </footer>
-
+<script src="../js/rating.js"></script>
 </body>
 </html>
