@@ -112,7 +112,9 @@ reviewCard.innerHTML =
 
 "<h3>" + "★".repeat(rating) + "</h3>" +
 
-"<p>" + review + "</p>";
+"<p>" + review + "</p>" + 
+
+"<hr>";
 
 reviewsContainer.appendChild(reviewCard);
 }
