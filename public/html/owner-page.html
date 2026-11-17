@@ -20,6 +20,12 @@
     <main>
         <h2>Restaurant Owner Dashboard</h2>
         <p>Manage your restaurant information and menu.</p>
+        <div style="margin-bottom: 20px;">
+            <label for="restaurantSelect"><strong>Select Restaurant to Manage:</strong></label>
+            <select id="restaurantSelect">
+                <option value="new">+ Add New Restaurant</option>
+            </select>
+        </div>
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 350px), 1fr)); gap: 20px;">
             <section class="menu-section">
                 <h2>Restaurant Details</h2>
@@ -82,5 +88,6 @@
         <p>&copy; 2026 Food Advisor. All rights reserved.</p>
     </footer>
 <script src="../js/auth.js"></script>
+<script src="../js/owner.js"></script>
 </body>
 </html>

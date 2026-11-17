@@ -2,14 +2,19 @@ const express = require('express');
 const router = express.Router();
 const db = require('../db');
 
-// GET /api/restaurants - fetch all restaurants (with optional ?cuisine= filter)
+// GET /api/restaurants - fetch all restaurants (with optional ?cuisine= and ?location= filters)
 router.get('/', function(req, res) {
-    let sql = 'SELECT * FROM restaurants';
+    let sql = 'SELECT * FROM restaurants WHERE 1=1';
     let params = [];
 
     if (req.query.cuisine) {
-        sql += ' WHERE cuisine = ?';
-        params.push(req.query.cuisine);
+        sql += ' AND cuisine LIKE ?';
+        params.push('%' + req.query.cuisine + '%');
+    }
+
+    if (req.query.location) {
+        sql += ' AND location LIKE ?';
+        params.push('%' + req.query.location + '%');
     }
 
     db.query(sql, params, function(err, results) {
@@ -17,7 +22,24 @@ router.get('/', function(req, res) {
             console.error(err);
             return res.status(500).json({ error: 'Database error fetching restaurants' });
         }
-        res.json(results); // returns rows as JSON
+        res.json(results);
+    });
+});
+
+// GET /api/restaurants/owner/mine - fetch restaurants owned by the logged-in user
+// (Placed BEFORE /:id so Express does not treat "owner" as an :id parameter)
+router.get('/owner/mine', function(req, res) {
+    const userID = req.cookies.userID;
+    if (!userID) {
+        return res.status(401).json({ message: 'You must be logged in.' });
+    }
+
+    db.query('SELECT * FROM restaurants WHERE ownerID = ?', [userID], function(err, results) {
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ message: 'Database error fetching your restaurants' });
+        }
+        res.json(results);
     });
 });
 
@@ -61,6 +83,133 @@ router.get('/:id', function(req, res) {
                 });
             });
         });
+    });
+});
+
+// POST /api/restaurants - create a new restaurant for the logged-in owner
+router.post('/', function(req, res) {
+    const userID = req.cookies.userID;
+    if (!userID) {
+        return res.status(401).json({ message: 'You must be logged in.' });
+    }
+
+    const { restaurant_name, cuisine, location, openingHours } = req.body;
+
+    if (!restaurant_name || !location) {
+        return res.status(400).json({ message: 'Restaurant name and location are required.' });
+    }
+
+    const sql = 'INSERT INTO restaurants (ownerID, restaurant_name, cuisine, location, openingHours) VALUES (?, ?, ?, ?, ?)';
+    const params = [userID, restaurant_name, cuisine || '', location, openingHours || ''];
+
+    db.query(sql, params, function(err, result) {
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ message: 'Database error creating restaurant.' });
+        }
+
+        res.status(201).json({
+            message: 'Restaurant created successfully!',
+            restaurantID: result.insertId
+        });
+    });
+});
+
+// PUT /api/restaurants/:id - update an existing restaurant owned by the logged-in user
+router.put('/:id', function(req, res) {
+    const userID = req.cookies.userID;
+    const restaurantID = req.params.id;
+
+    if (!userID) {
+        return res.status(401).json({ message: 'You must be logged in.' });
+    }
+
+    const { restaurant_name, cuisine, location, openingHours } = req.body;
+
+    const sql = 'UPDATE restaurants SET restaurant_name = ?, cuisine = ?, location = ?, openingHours = ? WHERE restaurantID = ? AND ownerID = ?';
+    const params = [restaurant_name, cuisine || '', location, openingHours || '', restaurantID, userID];
+
+    db.query(sql, params, function(err, result) {
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ message: 'Database error updating restaurant.' });
+        }
+
+        if (result.affectedRows === 0) {
+            return res.status(403).json({ message: 'Restaurant not found or unauthorized.' });
+        }
+
+        res.json({ message: 'Restaurant updated successfully!' });
+    });
+});
+
+// POST /api/restaurants/:id/menu - add a menu item to an owned restaurant
+router.post('/:id/menu', function(req, res) {
+    const userID = req.cookies.userID;
+    const restaurantID = req.params.id;
+
+    if (!userID) {
+        return res.status(401).json({ message: 'You must be logged in.' });
+    }
+
+    const { itemName, description, price } = req.body;
+
+    if (!itemName || price === undefined) {
+        return res.status(400).json({ message: 'Item name and price are required.' });
+    }
+
+    // Verify ownership first
+    db.query('SELECT restaurantID FROM restaurants WHERE restaurantID = ? AND ownerID = ?', [restaurantID, userID], function(err, ownedResults) {
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ message: 'Database error verifying ownership.' });
+        }
+
+        if (ownedResults.length === 0) {
+            return res.status(403).json({ message: 'You do not own this restaurant.' });
+        }
+
+        const insertSql = 'INSERT INTO menuItems (restaurantID, itemName, description, price) VALUES (?, ?, ?, ?)';
+        db.query(insertSql, [restaurantID, itemName, description || '', price], function(err, result) {
+            if (err) {
+                console.error(err);
+                return res.status(500).json({ message: 'Database error adding menu item.' });
+            }
+
+            res.status(201).json({
+                message: 'Menu item added!',
+                menuItemID: result.insertId
+            });
+        });
+    });
+});
+
+// DELETE /api/restaurants/menu/:itemId - delete a menu item from an owned restaurant
+router.delete('/menu/:itemId', function(req, res) {
+    const userID = req.cookies.userID;
+    const itemId = req.params.itemId;
+
+    if (!userID) {
+        return res.status(401).json({ message: 'You must be logged in.' });
+    }
+
+    const sql = `
+        DELETE menuItems FROM menuItems
+        JOIN restaurants ON menuItems.restaurantID = restaurants.restaurantID
+        WHERE menuItems.menuItemID = ? AND restaurants.ownerID = ?
+    `;
+
+    db.query(sql, [itemId, userID], function(err, result) {
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ message: 'Database error deleting menu item.' });
+        }
+
+        if (result.affectedRows === 0) {
+            return res.status(403).json({ message: 'Menu item not found or unauthorized.' });
+        }
+
+        res.json({ message: 'Menu item deleted.' });
     });
 });
 
