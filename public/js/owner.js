@@ -90,7 +90,7 @@ async function handleRestaurantSelection() {
             `).join('');
         }
 
-        // render customer reviews
+        // render customer reviews (read-only)
         if (!data.reviews || data.reviews.length === 0) {
             reviewsList.innerHTML = '<p>No customer reviews yet.</p>';
         } else {
