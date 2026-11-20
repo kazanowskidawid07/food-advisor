@@ -15,6 +15,7 @@ CREATE TABLE restaurants (
     cuisine VARCHAR(100),
     location VARCHAR(255) NOT NULL,
     openingHours VARCHAR(255),
+    image_url VARCHAR(500) DEFAULT NULL,
     FOREIGN KEY (ownerID) REFERENCES users(userID) ON DELETE CASCADE
 );
 
@@ -37,3 +38,4 @@ CREATE TABLE reviews (
     FOREIGN KEY (userID) REFERENCES users(userID) ON DELETE CASCADE,
     FOREIGN KEY (restaurantID) REFERENCES restaurants(restaurantID) ON DELETE CASCADE
 );
+
