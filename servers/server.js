@@ -5,6 +5,7 @@ const cookieParser = require('cookie-parser'); // third party module for cookies
 // import modular route files
 const authRouter = require('./routes/auth');
 const restaurantsRouter = require('./routes/restaurants');
+const reviewsRouter = require('./routes/reviews');
 
 const app = express();
 const PORT = 3000;
@@ -25,6 +26,7 @@ app.get('/', function (req, res) {
 // mount modular API routes
 app.use('/api', authRouter);
 app.use('/api/restaurants', restaurantsRouter);
+app.use('/api/reviews', reviewsRouter);
 
 // start the server
 app.listen(PORT, function () {

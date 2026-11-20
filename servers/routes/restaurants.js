@@ -68,13 +68,14 @@ router.get('/:id', function(req, res) {
                 return res.status(500).json({ error: 'Database error fetching menu' });
             }
 
-            const reviewSql = `
-                SELECT reviews.reviewID, reviews.rating, reviews.comment, reviews.reviewDate, users.username 
-                FROM reviews 
-                JOIN users ON reviews.userID = users.userID 
-                WHERE reviews.restaurantID = ? 
-                ORDER BY reviews.reviewDate DESC
-            `;
+const reviewSql = `
+    SELECT reviews.reviewID, reviews.rating, reviews.comment, reviews.reviewDate, 
+           COALESCE(NULLIF(users.username, ''), users.email) AS username 
+    FROM reviews 
+    JOIN users ON reviews.userID = users.userID 
+    WHERE reviews.restaurantID = ? 
+    ORDER BY reviews.reviewDate DESC
+`;
             db.query(reviewSql, [restaurantID], function(err, reviewResults) {
                 if (err) {
                     console.error(err);
