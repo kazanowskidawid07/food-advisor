@@ -1,147 +1,141 @@
-// Get the cuisine dropdown from the page
+// Get filter elements and container from the page
 const cuisineFilter = document.getElementById("cuisineFilter");
-
-// Get the search bar from the page
 const searchBar = document.getElementById("restaurantSearch");
-
-// Get all restaurant cards
-const cards = document.querySelectorAll(".restaurant-card");
-
 const priceFilter = document.getElementById("priceFilter");
-
-// Get the dietary filter dropdown
 const dietaryFilter = document.getElementById("dietaryFilter");
-
-// Get the location filter dropdown
 const locationFilter = document.getElementById("locationFilter");
+const restaurantContainer = document.querySelector(".restaurant-container");
 
-/*
-    This function runs whenever:
-    - the user changes the cuisine filter
-    - the user types into the search bar
-
-    It decides which restaurant cards should be shown.
-*/
-
-
-function filterRestaurants() {
-
-    // Get the selected cuisine from the dropdown
-    const selectedCuisine = cuisineFilter.value;
-
-    //Get chosen price
-    const selectedPrice = priceFilter.value;
-
-    // Get selected dietary preference
-    const selectedDietary = dietaryFilter.value;
-
-// Get selected location
-    const selectedLocation = locationFilter.value;
-
-    // Convert search text to lowercase
-    // so search is not case-sensitive
-    const searchText = searchBar.value.toLowerCase();
-
-    // Loop through every restaurant card
-    cards.forEach(function(card) {
-
-        // Read the cuisine stored in data-cuisine
-        const cuisine = card.dataset.cuisine;
-
-        const price = card.dataset.price;
-
-        // Read location stored in data-location
-        const location = card.dataset.location;
-
-// Read dietary information stored in data-dietary
-        const dietary = card.dataset.dietary;
-
-        // Get the restaurant name from the h3 tag
-        const restaurantName =
-            card.querySelector("h3").textContent.toLowerCase();
-
-        /*
-            Check if cuisine matches.
-
-            Examples:
-            selectedCuisine = "italian"
-            cuisine = "italian"
-            -> true
-
-            selectedCuisine = ""
-            -> true because "All cuisines" is selected
-        */
-        const matchesCuisine =
-            selectedCuisine === "" ||
-            cuisine === selectedCuisine;
-
-        /*
-            Check if the restaurant name contains
-            the text entered in the search bar.
-
-            Example:
-            searchText = "ita"
-
-            restaurantName = "italian restaurant"
-
-            Result = true
-        */
-
-        const matchesPrice = 
-        selectedPrice === "" || price === selectedPrice
-        const matchesSearch =
-            restaurantName.includes(searchText);
-
-            // Check if location matches
-        const matchesLocation =
-            selectedLocation === "" ||
-            location === selectedLocation;
-
-        // Check if dietary preference matches
-        const matchesDietary =
-            selectedDietary === "" ||
-            dietary === selectedDietary;
-
-        /*
-            Only show restaurants that pass BOTH tests.
-        */
-        if (matchesCuisine && matchesSearch && matchesPrice && matchesDietary && matchesLocation) {
-
-            // Show card
-            card.style.display = "block";
-
-        }
-        else {
-
-            // Hide card
-            card.style.display = "none";
-
-        }
-
-    });
-
+// Escape user-generated text to prevent XSS
+function escapeHTML(str) {
+    if (!str) return "";
+    return String(str)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;");
 }
 
-/*
-    Run filterRestaurants whenever the
-    cuisine selection changes.
-*/
-cuisineFilter.addEventListener(
-    "change",
-    filterRestaurants
-);
+// Pick an image from ../images/ based on cuisine
+function getCuisineImage(cuisine) {
+    const c = (cuisine || "").toLowerCase();
+    if (c.includes("indian")) return "../images/indian-food.jpg";
+    if (c.includes("italian")) return "../images/italian-food.jpg";
+    if (c.includes("chinese") || c.includes("japanese")) return "../images/chinese-food.jpg";
+    return "../images/italian-food.jpg";
+}
 
-priceFilter.addEventListener("change", filterRestaurants);
+// Dynamically populate Cuisine and Location dropdowns from live database rows
+function populateFilterOptions(restaurants) {
+    if (cuisineFilter) {
+        const cuisines = [...new Set(
+            restaurants.map(r => (r.cuisine || "").trim()).filter(Boolean)
+        )].sort();
 
-locationFilter.addEventListener("change", filterRestaurants);
+        cuisineFilter.innerHTML = '<option value="">All cuisines</option>' +
+            cuisines.map(c => `<option value="${escapeHTML(c.toLowerCase())}">${escapeHTML(c)}</option>`).join("");
+    }
 
-dietaryFilter.addEventListener("change", filterRestaurants);
+    if (locationFilter) {
+        const locations = [...new Set(
+            restaurants.map(r => (r.location || "").trim()).filter(Boolean)
+        )].sort();
 
-/*
-    Run filterRestaurants whenever the
-    user types in the search bar.
-*/
-searchBar.addEventListener(
-    "input",
-    filterRestaurants
-);
+        locationFilter.innerHTML = '<option value="">All locations</option>' +
+            locations.map(loc => `<option value="${escapeHTML(loc.toLowerCase())}">${escapeHTML(loc)}</option>`).join("");
+    }
+}
+
+// Render restaurant cards into .restaurant-container
+function renderRestaurants(restaurants) {
+    if (!restaurantContainer) return;
+
+    if (!restaurants || restaurants.length === 0) {
+        restaurantContainer.innerHTML = "<p>No restaurants available.</p>";
+        return;
+    }
+
+    restaurantContainer.innerHTML = restaurants.map(r => {
+        const safeName = escapeHTML(r.restaurant_name);
+        const safeCuisine = escapeHTML(r.cuisine || "Various");
+        const safeLocation = escapeHTML(r.location || "");
+        const safeHours = escapeHTML(r.openingHours || "Hours not listed");
+        const imgSrc = getCuisineImage(r.cuisine);
+
+        return `
+            <div class="restaurant-card"
+                 data-cuisine="${escapeHTML((r.cuisine || "").toLowerCase())}"
+                 data-location="${escapeHTML((r.location || "").toLowerCase())}"
+                 data-price="${escapeHTML((r.price || "").toLowerCase())}"
+                 data-dietary="${escapeHTML((r.dietary || "").toLowerCase())}">
+                <img src="${imgSrc}" alt="${safeCuisine} cuisine">
+                <h3>${safeName}</h3>
+                <p>Cuisine: ${safeCuisine}</p>
+                <p>Location: ${safeLocation}</p>
+                <p>Hours: ${safeHours}</p>
+                <a href="restaurant-details.html?id=${encodeURIComponent(r.restaurantID)}" class="view-button">View Restaurant</a>
+            </div>
+        `;
+    }).join("");
+}
+
+// Filter dynamically rendered cards whenever a dropdown or search input changes
+function filterRestaurants() {
+    const selectedCuisine = cuisineFilter ? cuisineFilter.value.toLowerCase() : "";
+    const selectedPrice = priceFilter ? priceFilter.value.toLowerCase() : "";
+    const selectedDietary = dietaryFilter ? dietaryFilter.value.toLowerCase() : "";
+    const selectedLocation = locationFilter ? locationFilter.value.toLowerCase() : "";
+    const searchText = searchBar ? searchBar.value.toLowerCase() : "";
+
+    // Query cards dynamically so newly rendered cards are included
+    const cards = document.querySelectorAll(".restaurant-card");
+
+    cards.forEach(function(card) {
+        const cuisine = (card.dataset.cuisine || "").toLowerCase();
+        const price = (card.dataset.price || "").toLowerCase();
+        const location = (card.dataset.location || "").toLowerCase();
+        const dietary = (card.dataset.dietary || "").toLowerCase();
+        const restaurantName = card.querySelector("h3").textContent.toLowerCase();
+
+        const matchesCuisine = selectedCuisine === "" || cuisine === selectedCuisine;
+        const matchesPrice = selectedPrice === "" || price === selectedPrice;
+        const matchesLocation = selectedLocation === "" || location === selectedLocation;
+        const matchesDietary = selectedDietary === "" || dietary === selectedDietary;
+        const matchesSearch = restaurantName.includes(searchText) || cuisine.includes(searchText) || location.includes(searchText);
+
+        if (matchesCuisine && matchesSearch && matchesPrice && matchesDietary && matchesLocation) {
+            card.style.display = "block";
+        } else {
+            card.style.display = "none";
+        }
+    });
+}
+
+// Fetch live restaurants from the backend API on page load
+async function loadRestaurants() {
+    try {
+        const response = await fetch("/api/restaurants");
+        if (!response.ok) {
+            throw new Error("Failed to fetch restaurants");
+        }
+        const restaurants = await response.json();
+        populateFilterOptions(restaurants);
+        renderRestaurants(restaurants);
+    } catch (error) {
+        console.error(error);
+        if (restaurantContainer) {
+            restaurantContainer.innerHTML = "<p>Error loading restaurants. Please try again later.</p>";
+        }
+    }
+}
+
+// Attach event listeners
+if (cuisineFilter) cuisineFilter.addEventListener("change", filterRestaurants);
+if (priceFilter) priceFilter.addEventListener("change", filterRestaurants);
+if (locationFilter) locationFilter.addEventListener("change", filterRestaurants);
+if (dietaryFilter) dietaryFilter.addEventListener("change", filterRestaurants);
+if (searchBar) searchBar.addEventListener("input", filterRestaurants);
+
+// Initialize page
+loadRestaurants();

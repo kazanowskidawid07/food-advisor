@@ -2,6 +2,13 @@ const express = require('express');
 const router = express.Router();
 const db = require('../db');
 
+// Helper to validate image_url (allows empty, local ../images/ paths, or http/https URLs)
+function isValidImageUrl(url) {
+    if (!url || url.trim() === '') return true;
+    const trimmed = url.trim();
+    return /^(\.\.\/images\/[a-zA-Z0-9._-]+|https?:\/\/[^\s"'<>]+)$/.test(trimmed);
+}
+
 // GET /api/restaurants - fetch all restaurants (with optional ?cuisine= and ?location= filters)
 router.get('/', function(req, res) {
     let sql = 'SELECT * FROM restaurants WHERE 1=1';
@@ -27,7 +34,6 @@ router.get('/', function(req, res) {
 });
 
 // GET /api/restaurants/owner/mine - fetch restaurants owned by the logged-in user
-// (Placed BEFORE /:id so Express does not treat "owner" as an :id parameter)
 router.get('/owner/mine', function(req, res) {
     const userID = req.cookies.userID;
     if (!userID) {
@@ -62,7 +68,6 @@ router.get('/:id', function(req, res) {
                 return res.status(500).json({ error: 'Database error fetching menu' });
             }
 
-            // JOIN with users to include reviewer username
             const reviewSql = `
                 SELECT reviews.reviewID, reviews.rating, reviews.comment, reviews.reviewDate, users.username 
                 FROM reviews 
@@ -93,14 +98,25 @@ router.post('/', function(req, res) {
         return res.status(401).json({ message: 'You must be logged in.' });
     }
 
-    const { restaurant_name, cuisine, location, openingHours } = req.body;
+    const { restaurant_name, cuisine, location, openingHours, image_url } = req.body;
 
     if (!restaurant_name || !location) {
         return res.status(400).json({ message: 'Restaurant name and location are required.' });
     }
 
-    const sql = 'INSERT INTO restaurants (ownerID, restaurant_name, cuisine, location, openingHours) VALUES (?, ?, ?, ?, ?)';
-    const params = [userID, restaurant_name, cuisine || '', location, openingHours || ''];
+    if (!isValidImageUrl(image_url)) {
+        return res.status(400).json({ message: 'Invalid image URL format.' });
+    }
+
+    const sql = 'INSERT INTO restaurants (ownerID, restaurant_name, cuisine, location, openingHours, image_url) VALUES (?, ?, ?, ?, ?, ?)';
+    const params = [
+        userID,
+        restaurant_name.trim(),
+        (cuisine || '').trim(),
+        location.trim(),
+        (openingHours || '').trim(),
+        (image_url || '').trim()
+    ];
 
     db.query(sql, params, function(err, result) {
         if (err) {
@@ -124,10 +140,26 @@ router.put('/:id', function(req, res) {
         return res.status(401).json({ message: 'You must be logged in.' });
     }
 
-    const { restaurant_name, cuisine, location, openingHours } = req.body;
+    const { restaurant_name, cuisine, location, openingHours, image_url } = req.body;
 
-    const sql = 'UPDATE restaurants SET restaurant_name = ?, cuisine = ?, location = ?, openingHours = ? WHERE restaurantID = ? AND ownerID = ?';
-    const params = [restaurant_name, cuisine || '', location, openingHours || '', restaurantID, userID];
+    if (!restaurant_name || !location) {
+        return res.status(400).json({ message: 'Restaurant name and location are required.' });
+    }
+
+    if (!isValidImageUrl(image_url)) {
+        return res.status(400).json({ message: 'Invalid image URL format.' });
+    }
+
+    const sql = 'UPDATE restaurants SET restaurant_name = ?, cuisine = ?, location = ?, openingHours = ?, image_url = ? WHERE restaurantID = ? AND ownerID = ?';
+    const params = [
+        restaurant_name.trim(),
+        (cuisine || '').trim(),
+        location.trim(),
+        (openingHours || '').trim(),
+        (image_url || '').trim(),
+        restaurantID,
+        userID
+    ];
 
     db.query(sql, params, function(err, result) {
         if (err) {
@@ -158,7 +190,6 @@ router.post('/:id/menu', function(req, res) {
         return res.status(400).json({ message: 'Item name and price are required.' });
     }
 
-    // Verify ownership first
     db.query('SELECT restaurantID FROM restaurants WHERE restaurantID = ? AND ownerID = ?', [restaurantID, userID], function(err, ownedResults) {
         if (err) {
             console.error(err);

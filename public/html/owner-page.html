@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -33,10 +32,14 @@
             <div class="dashboard-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; min-width: 750px;">
                 <section class="menu-section" style="padding: 15px; display: flex; flex-direction: column;">
                     <h2>Restaurant Details</h2>
-                    <div class="menu-item" style="width: 100%; max-width: none; height: 380px; box-sizing: border-box;">
+                    <div class="menu-item" style="width: 100%; max-width: none; min-height: 380px; box-sizing: border-box;">
                         <h3>Add or Edit Restaurant</h3>
+                        <div style="margin-bottom: 12px;">
+                            <label for="restaurantSelect">Select Restaurant:</label>
+                            <select id="restaurantSelect"></select>
+                        </div>
                         <form id="restaurantForm">
-                            <div style="display: grid; grid-template-columns: 140px 160px; gap: 20px 10px; justify-content: center; align-items: center;">
+                            <div style="display: grid; grid-template-columns: 140px 160px; gap: 14px 10px; justify-content: center; align-items: center;">
                                 <label for="restaurantName" style="text-align: left;">Restaurant Name:</label>
                                 <input type="text" id="restaurantName" required>
                                 <label for="cuisine" style="text-align: left;">Cuisine:</label>
@@ -45,14 +48,21 @@
                                 <input type="text" id="location" required>
                                 <label for="openingHours" style="text-align: left;">Opening Hours:</label>
                                 <input type="text" id="openingHours" placeholder="e.g. 9am - 10pm">
+                                <label for="imageUrl" style="text-align: left;">Image URL / Preset:</label>
+                                <input type="text" id="imageUrl" list="imagePresets" placeholder="Select or paste URL">
+                                <datalist id="imagePresets">
+                                    <option value="../images/indian-food.jpg">Indian Food</option>
+                                    <option value="../images/italian-food.jpg">Italian Food</option>
+                                    <option value="../images/chinese-food.jpg">Chinese Food</option>
+                                </datalist>
                             </div>
-                            <button type="submit" class="view-button" style="margin-top: 25px;">Save Restaurant</button>
+                            <button type="submit" class="view-button" style="margin-top: 20px;">Save Restaurant</button>
                         </form>
                     </div>
                 </section>
                 <section class="menu-section" style="padding: 15px; display: flex; flex-direction: column;">
                     <h2>Manage Menu</h2>
-                    <div class="menu-item" style="width: 100%; max-width: none; height: 380px; box-sizing: border-box;">
+                    <div class="menu-item" style="width: 100%; max-width: none; min-height: 380px; box-sizing: border-box;">
                         <h3>Add Menu Item</h3>
                         <form id="menuForm">
                             <div style="display: grid; grid-template-columns: 140px 160px; gap: 20px 10px; justify-content: center; align-items: center;">
@@ -69,13 +79,13 @@
                 </section>
                 <section class="menu-section" style="padding: 15px; display: flex; flex-direction: column;">
                     <h2>Current Menu</h2>
-                    <div class="menu-item" id="menuList" style="width: 100%; max-width: none; height: 380px; box-sizing: border-box;">
+                    <div class="menu-item" id="menuList" style="width: 100%; max-width: none; min-height: 380px; box-sizing: border-box;">
                         <p>Your menu items will appear here.</p>
                     </div>
                 </section>
                 <section class="menu-section" style="padding: 15px; display: flex; flex-direction: column;">
                     <h2>Customer Reviews</h2>
-                    <div class="menu-item" style="width: 100%; max-width: none; height: 380px; box-sizing: border-box;">
+                    <div class="menu-item" style="width: 100%; max-width: none; min-height: 380px; box-sizing: border-box;">
                         <h3>Restaurant Reviews</h3>
                         <p>View customer ratings and feedback.</p>
                         <div id="reviewsList">
@@ -90,5 +100,6 @@
         <p>&copy; 2026 Food Advisor. All rights reserved.</p>
     </footer>
     <script src="../js/auth.js"></script>
+    <script src="../js/owner.js"></script>
 </body>
 </html>
