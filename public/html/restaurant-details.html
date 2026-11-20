@@ -23,101 +23,63 @@
     </header>
 
     <main>
-        
         <a href="restaurants-page.html" class="back-button">
             ← Back to Restaurants
         </a>
 
-        <div class = "restaurant-top" >
-<section id = "restaurant-info">
-    <h2>Indian Restaurant</h2>
+        <div class="restaurant-top">
+            <section id="restaurant-info">
+                <p>Loading restaurant details...</p>
+            </section>
 
-    <p>Discover delicious Indian food and traditional flavours.</p>
+            <section id="review-section">
+                <h2>Leave a Review</h2>
 
-    <p><strong>Cuisine:</strong> Indian</p>
+                <div id="stars">
+                    <span class="star">☆</span>
+                    <span class="star">☆</span>
+                    <span class="star">☆</span>
+                    <span class="star">☆</span>
+                    <span class="star">☆</span>
+                </div>
 
-    <p><strong>Price:</strong> Budget</p>
+                <p>
+                    Rating:
+                    <span id="ratingValue">0</span>/5
+                </p>
 
-    <p><strong>Rating:</strong> 4.5/5</p>
+                <textarea
+                    id="reviewText"
+                    rows="5"
+                    cols="50"
+                    placeholder="Write your review here..."></textarea>
 
-</section>
+                <br><br>
 
- <section id = "review-section">
-
-    <h2>Leave a Review</h2>
-    
-
-    <div id="stars">
-
-        <span class="star">☆</span>
-        <span class="star">☆</span>
-        <span class="star">☆</span>
-        <span class="star">☆</span>
-        <span class="star">☆</span>
-
-    </div>
-
-    <p>
-        Rating:
-        <span id="ratingValue">0</span>/5
-    </p>
-
-    <textarea
-        id="reviewText"
-        rows="5"
-        cols="50"
-        placeholder="Write your review here..."></textarea>
-
-    <br><br>
-
-    <button id="submitReview">
-        Submit Review
-    </button>
-    </section>
-
-    </div>
+                <button id="submitReview">
+                    Submit Review
+                </button>
+            </section>
+        </div>
 
         <section class="menu-section">
+            <h2>Our Menu</h2>
+            <p>Loading menu...</p>
+        </section>
 
-    <h2>Our Menu</h2>
+        <section id="reviews-section">
+            <h2>Customer Reviews</h2>
 
-    <div class="menu-item">
-        <h3>Chicken Tikka Masala</h3>
-        <p>Grilled chicken cooked in a creamy tomato sauce.</p>
-        <p>Price: £12.50</p>
-    </div>
-
-    <div class="menu-item">
-        <h3>Vegetable Biryani</h3>
-        <p>Fragrant rice cooked with mixed vegetables and spices.</p>
-        <p>Price: £10.00</p>
-    </div>
-
-    <div class="menu-item">
-        <h3>Butter Chicken</h3>
-        <p>Tender chicken cooked in a rich buttery sauce.</p>
-        <p>Price: £13.00</p>
-    </div>
-
-</section>
-
-<section id="reviews-section">
-
-    <h2>Customer Reviews</h2>
-
-    <div id="reviews-container">
-
-        <p>Read some of the reviews left by other customers!</p>
-        <hr>
-
-    </div>
-
-</section>
+            <div id="reviews-container">
+                <p>Loading reviews...</p>
+            </div>
+        </section>
     </main>
 
     <footer>
         <p>&copy; 2026 Food Advisor. All rights reserved.</p>
     </footer>
+
     <script src="../js/auth.js"></script>
     <script src="../js/rating.js"></script>
 </body>

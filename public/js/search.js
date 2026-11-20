@@ -17,13 +17,16 @@ function escapeHTML(str) {
         .replace(/'/g, "&#39;");
 }
 
-// Pick an image from ../images/ based on cuisine
-function getCuisineImage(cuisine) {
-    const c = (cuisine || "").toLowerCase();
+// Pick custom image_url first, then fallback by cuisine, or return blank if none
+function getRestaurantImage(restaurant) {
+    if (restaurant.image_url && restaurant.image_url.trim() !== "") {
+        return restaurant.image_url.trim();
+    }
+    const c = (restaurant.cuisine || "").toLowerCase();
     if (c.includes("indian")) return "../images/indian-food.jpg";
     if (c.includes("italian")) return "../images/italian-food.jpg";
     if (c.includes("chinese") || c.includes("japanese")) return "../images/chinese-food.jpg";
-    return "../images/italian-food.jpg";
+    return "";
 }
 
 // Dynamically populate Cuisine and Location dropdowns from live database rows
@@ -61,7 +64,8 @@ function renderRestaurants(restaurants) {
         const safeCuisine = escapeHTML(r.cuisine || "Various");
         const safeLocation = escapeHTML(r.location || "");
         const safeHours = escapeHTML(r.openingHours || "Hours not listed");
-        const imgSrc = getCuisineImage(r.cuisine);
+        const imgSrc = getRestaurantImage(r);
+        const imgHTML = imgSrc ? `<img src="${escapeHTML(imgSrc)}" alt="${safeCuisine} cuisine">` : "";
 
         return `
             <div class="restaurant-card"
@@ -69,7 +73,7 @@ function renderRestaurants(restaurants) {
                  data-location="${escapeHTML((r.location || "").toLowerCase())}"
                  data-price="${escapeHTML((r.price || "").toLowerCase())}"
                  data-dietary="${escapeHTML((r.dietary || "").toLowerCase())}">
-                <img src="${imgSrc}" alt="${safeCuisine} cuisine">
+                ${imgHTML}
                 <h3>${safeName}</h3>
                 <p>Cuisine: ${safeCuisine}</p>
                 <p>Location: ${safeLocation}</p>
