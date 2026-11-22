@@ -6,6 +6,14 @@ const dietaryFilter = document.getElementById("dietaryFilter");
 const locationFilter = document.getElementById("locationFilter");
 const restaurantContainer = document.querySelector(".restaurant-container");
 
+function getPriceTier(avgPrice) {
+    if (avgPrice === null || avgPrice === undefined) return "";
+    const price = Number(avgPrice);
+    if (price < 10) return "budget";
+    if (price <= 20) return "moderate";
+    return "expensive";
+}
+
 // Escape user-generated text to prevent XSS
 function escapeHTML(str) {
     if (!str) return "";
@@ -64,6 +72,9 @@ function renderRestaurants(restaurants) {
         const safeCuisine = escapeHTML(r.cuisine || "Various");
         const safeLocation = escapeHTML(r.location || "");
         const safeHours = escapeHTML(r.openingHours || "Hours not listed");
+        const safeDietary = escapeHTML(r.dietary || "Standard");
+        const priceTier = getPriceTier(r.avgPrice);
+        const priceLabel = priceTier ? priceTier.charAt(0).toUpperCase() + priceTier.slice(1) : "Not listed";
         const imgSrc = getRestaurantImage(r);
         const imgHTML = imgSrc ? `<img src="${escapeHTML(imgSrc)}" alt="${safeCuisine} cuisine">` : "";
 
@@ -71,12 +82,14 @@ function renderRestaurants(restaurants) {
             <div class="restaurant-card"
                  data-cuisine="${escapeHTML((r.cuisine || "").toLowerCase())}"
                  data-location="${escapeHTML((r.location || "").toLowerCase())}"
-                 data-price="${escapeHTML((r.price || "").toLowerCase())}"
+                 data-price="${escapeHTML(priceTier)}"
                  data-dietary="${escapeHTML((r.dietary || "").toLowerCase())}">
                 ${imgHTML}
                 <h3>${safeName}</h3>
                 <p>Cuisine: ${safeCuisine}</p>
                 <p>Location: ${safeLocation}</p>
+                <p>Price Range: ${priceLabel}</p>
+                <p>Dietary: ${safeDietary}</p>
                 <p>Hours: ${safeHours}</p>
                 <a href="restaurant-details.html?id=${encodeURIComponent(r.restaurantID)}" class="view-button">View Restaurant</a>
             </div>
@@ -92,7 +105,6 @@ function filterRestaurants() {
     const selectedLocation = locationFilter ? locationFilter.value.toLowerCase() : "";
     const searchText = searchBar ? searchBar.value.toLowerCase() : "";
 
-    // Query cards dynamically so newly rendered cards are included
     const cards = document.querySelectorAll(".restaurant-card");
 
     cards.forEach(function(card) {
@@ -105,7 +117,7 @@ function filterRestaurants() {
         const matchesCuisine = selectedCuisine === "" || cuisine === selectedCuisine;
         const matchesPrice = selectedPrice === "" || price === selectedPrice;
         const matchesLocation = selectedLocation === "" || location === selectedLocation;
-        const matchesDietary = selectedDietary === "" || dietary === selectedDietary;
+        const matchesDietary = selectedDietary === "" || dietary.includes(selectedDietary);
         const matchesSearch = restaurantName.includes(searchText) || cuisine.includes(searchText) || location.includes(searchText);
 
         if (matchesCuisine && matchesSearch && matchesPrice && matchesDietary && matchesLocation) {
