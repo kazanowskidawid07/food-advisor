@@ -6,7 +6,10 @@ const db = require('../db');
 function isValidImageUrl(url) {
     if (!url || url.trim() === '') return true;
     const trimmed = url.trim();
-    return /^(\.\.\/images\/[a-zA-Z0-9._-]+|https?:\/\/[^\s"'<>]+)$/.test(trimmed);
+    if (trimmed.includes('<') || trimmed.includes('>') || trimmed.includes('"') || trimmed.includes("'")) {
+        return false;
+    }
+    return trimmed.startsWith('../images/') || trimmed.startsWith('http://') || trimmed.startsWith('https://');
 }
 
 // GET /api/restaurants - fetch all restaurants (with optional ?cuisine= and ?location= filters)
@@ -105,7 +108,7 @@ router.post('/', function(req, res) {
         return res.status(400).json({ message: 'Restaurant name and location are required.' });
     }
 
-    if (!isValidImageUrl(image_url)) {
+if (!isValidImageUrl(image_url)) {
         return res.status(400).json({ message: 'Invalid image URL format.' });
     }
 
