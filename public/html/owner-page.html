@@ -27,10 +27,18 @@
     <main>
         <h2>Restaurant Owner Dashboard</h2>
         <p>Manage your restaurant information and menu.</p>
+
+        <div style="margin-bottom: 20px;">
+            <label for="restaurantSelect"><strong>Select Restaurant:</strong></label>
+            <select id="restaurantSelect" style="padding: 6px 10px; margin-left: 8px;">
+                <option value="new">+ Add New Restaurant</option>
+            </select>
+        </div>
+
         <div class="dashboard-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
             <section class="menu-section" style="padding: 15px 0;">
                 <h2>Restaurant Details</h2>
-                <div class="menu-item" style="width: 100%; max-width: none; height: 380px; box-sizing: border-box;">
+                <div class="menu-item" style="width: 100%; max-width: none; min-height: 380px; box-sizing: border-box;">
                     <h3>Add or Edit Restaurant</h3>
                     <form id="restaurantForm">
                         <label for="restaurantName">Restaurant Name:</label>
@@ -45,13 +53,16 @@
                         <label for="openingHours">Opening Hours:</label>
                         <input type="text" id="openingHours" placeholder="e.g. 9am - 10pm">
                         <br><br>
+                        <label for="imageUrl">Image URL (optional):</label>
+                        <input type="text" id="imageUrl" placeholder="e.g. ../images/italian-food.jpg or https://...">
+                        <br><br>
                         <button type="submit" class="view-button">Save Restaurant</button>
                     </form>
                 </div>
             </section>
             <section class="menu-section" style="padding: 15px 0;">
                 <h2>Manage Menu</h2>
-                <div class="menu-item" style="width: 100%; max-width: none; height: 380px; box-sizing: border-box;">
+                <div class="menu-item" style="width: 100%; max-width: none; min-height: 380px; box-sizing: border-box;">
                     <h3>Add Menu Item</h3>
                     <form id="menuForm">
                         <label for="itemName">Food Item:</label>
@@ -69,7 +80,7 @@
             </section>
             <section class="menu-section" style="padding: 15px 0;">
                 <h2>Current Menu</h2>
-                <div class="menu-item" style="width: 100%; max-width: none; height: 380px; box-sizing: border-box;">
+                <div class="menu-item" style="width: 100%; max-width: none; min-height: 380px; box-sizing: border-box;">
                     <div id="menuList">
                         <p>Your menu items will appear here.</p>
                     </div>
@@ -77,7 +88,7 @@
             </section>
             <section class="menu-section" style="padding: 15px 0;">
                 <h2>Customer Reviews</h2>
-                <div class="menu-item" style="width: 100%; max-width: none; height: 380px; box-sizing: border-box;">
+                <div class="menu-item" style="width: 100%; max-width: none; min-height: 380px; box-sizing: border-box;">
                     <h3>Restaurant Reviews</h3>
                     <p>View customer ratings and feedback.</p>
                     <div id="reviewsList">
