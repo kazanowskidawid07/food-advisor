@@ -65,6 +65,10 @@ async function handleRestaurantSelection() {
         document.getElementById('cuisine').value = current.cuisine || '';
         document.getElementById('location').value = current.location || '';
         document.getElementById('openingHours').value = current.openingHours || '';
+        const dietaryInput = document.getElementById('dietary');
+        if (dietaryInput) {
+            dietaryInput.value = current.dietary || '';
+        }
         const imageInput = document.getElementById('imageUrl');
         if (imageInput) {
             imageInput.value = current.image_url || '';
@@ -113,6 +117,7 @@ restaurantForm.addEventListener('submit', async function (event) {
     event.preventDefault();
 
     const selectedId = restaurantSelect.value;
+    const dietaryInput = document.getElementById('dietary');
     const imageInput = document.getElementById('imageUrl');
 
     const payload = {
@@ -120,6 +125,7 @@ restaurantForm.addEventListener('submit', async function (event) {
         cuisine: document.getElementById('cuisine').value.trim(),
         location: document.getElementById('location').value.trim(),
         openingHours: document.getElementById('openingHours').value.trim(),
+        dietary: dietaryInput ? dietaryInput.value.trim() : '',
         image_url: imageInput ? imageInput.value.trim() : ''
     };
 

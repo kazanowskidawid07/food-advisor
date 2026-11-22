@@ -12,20 +12,27 @@ function isValidImageUrl(url) {
     return trimmed.startsWith('../images/') || trimmed.startsWith('http://') || trimmed.startsWith('https://');
 }
 
-// GET /api/restaurants - fetch all restaurants (with optional ?cuisine= and ?location= filters)
+// GET /api/restaurants - fetch all restaurants + average menu price
 router.get('/', function(req, res) {
-    let sql = 'SELECT * FROM restaurants WHERE 1=1';
+    let sql = `
+        SELECT restaurants.*, ROUND(AVG(menuItems.price), 2) AS avgPrice
+        FROM restaurants
+        LEFT JOIN menuItems ON restaurants.restaurantID = menuItems.restaurantID
+        WHERE 1=1
+    `;
     let params = [];
 
     if (req.query.cuisine) {
-        sql += ' AND cuisine LIKE ?';
+        sql += ' AND restaurants.cuisine LIKE ?';
         params.push('%' + req.query.cuisine + '%');
     }
 
     if (req.query.location) {
-        sql += ' AND location LIKE ?';
+        sql += ' AND restaurants.location LIKE ?';
         params.push('%' + req.query.location + '%');
     }
+
+    sql += ' GROUP BY restaurants.restaurantID';
 
     db.query(sql, params, function(err, results) {
         if (err) {
@@ -71,14 +78,14 @@ router.get('/:id', function(req, res) {
                 return res.status(500).json({ error: 'Database error fetching menu' });
             }
 
-const reviewSql = `
-    SELECT reviews.reviewID, reviews.rating, reviews.comment, reviews.reviewDate, 
-           COALESCE(NULLIF(users.username, ''), users.email) AS username 
-    FROM reviews 
-    JOIN users ON reviews.userID = users.userID 
-    WHERE reviews.restaurantID = ? 
-    ORDER BY reviews.reviewDate DESC
-`;
+            const reviewSql = `
+                SELECT reviews.reviewID, reviews.rating, reviews.comment, reviews.reviewDate, 
+                       COALESCE(NULLIF(users.username, ''), users.email) AS username 
+                FROM reviews 
+                JOIN users ON reviews.userID = users.userID 
+                WHERE reviews.restaurantID = ? 
+                ORDER BY reviews.reviewDate DESC
+            `;
             db.query(reviewSql, [restaurantID], function(err, reviewResults) {
                 if (err) {
                     console.error(err);
@@ -102,24 +109,25 @@ router.post('/', function(req, res) {
         return res.status(401).json({ message: 'You must be logged in.' });
     }
 
-    const { restaurant_name, cuisine, location, openingHours, image_url } = req.body;
+    const { restaurant_name, cuisine, location, openingHours, image_url, dietary } = req.body;
 
     if (!restaurant_name || !location) {
         return res.status(400).json({ message: 'Restaurant name and location are required.' });
     }
 
-if (!isValidImageUrl(image_url)) {
+    if (!isValidImageUrl(image_url)) {
         return res.status(400).json({ message: 'Invalid image URL format.' });
     }
 
-    const sql = 'INSERT INTO restaurants (ownerID, restaurant_name, cuisine, location, openingHours, image_url) VALUES (?, ?, ?, ?, ?, ?)';
+    const sql = 'INSERT INTO restaurants (ownerID, restaurant_name, cuisine, location, openingHours, image_url, dietary) VALUES (?, ?, ?, ?, ?, ?, ?)';
     const params = [
         userID,
         restaurant_name.trim(),
         (cuisine || '').trim(),
         location.trim(),
         (openingHours || '').trim(),
-        (image_url || '').trim()
+        (image_url || '').trim(),
+        (dietary || '').trim()
     ];
 
     db.query(sql, params, function(err, result) {
@@ -144,7 +152,7 @@ router.put('/:id', function(req, res) {
         return res.status(401).json({ message: 'You must be logged in.' });
     }
 
-    const { restaurant_name, cuisine, location, openingHours, image_url } = req.body;
+    const { restaurant_name, cuisine, location, openingHours, image_url, dietary } = req.body;
 
     if (!restaurant_name || !location) {
         return res.status(400).json({ message: 'Restaurant name and location are required.' });
@@ -154,13 +162,14 @@ router.put('/:id', function(req, res) {
         return res.status(400).json({ message: 'Invalid image URL format.' });
     }
 
-    const sql = 'UPDATE restaurants SET restaurant_name = ?, cuisine = ?, location = ?, openingHours = ?, image_url = ? WHERE restaurantID = ? AND ownerID = ?';
+    const sql = 'UPDATE restaurants SET restaurant_name = ?, cuisine = ?, location = ?, openingHours = ?, image_url = ?, dietary = ? WHERE restaurantID = ? AND ownerID = ?';
     const params = [
         restaurant_name.trim(),
         (cuisine || '').trim(),
         location.trim(),
         (openingHours || '').trim(),
         (image_url || '').trim(),
+        (dietary || '').trim(),
         restaurantID,
         userID
     ];
