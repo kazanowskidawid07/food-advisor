@@ -1,12 +1,12 @@
 USE food_advisor;
 
 INSERT INTO users (username, email, hashedPassword, role) VALUES
-('chr123', 'chris@gmail.com', 'test_hash_chris', 'owner'),
-('daw123', 'dawid@outlook.com', 'test_hash_dawid', 'owner'),
-('arm123', 'armaan@icloud.com', 'test_hash_armaan', 'owner'),
-('zak123', 'zak@gmail.com', 'test_hash_zak', 'customer'),
-('kev123', 'kevin@hotmail.com', 'test_hash_kevin', 'customer'),
-('admin', 'admin@outlook.com', 'test_hash_admin', 'admin');
+('chr123', 'chris@gmail.com', 'notrealpassword1, 'owner'),
+('daw123', 'dawid@outlook.com', 'notrealpassword2', 'owner'),
+('arm123', 'armaan@icloud.com', 'notrealpassword3', 'owner'),
+('zak123', 'zak@gmail.com', 'notrealpassword4', 'customer'),
+('kev123', 'kevin@hotmail.com', 'notrealpassword5', 'customer'),
+('admin', 'admin@outlook.com', 'notrealpassword6', 'admin');
 
 INSERT INTO restaurants
 (ownerID, restaurant_name, cuisine, location, openingHours, image_url)
