@@ -11,6 +11,9 @@ INSERT INTO users (username, email, hashedPassword, role) VALUES
 /*setting an admin after registering an account*/
 /* UPDATE users SET role="admin" WHERE email="youremail";*/
 
+/*setting an owner after registering an account*/
+/* UPDATE users SET role="owner" WHERE email="youremail";*/
+
 INSERT INTO restaurants
 (ownerID, restaurant_name, cuisine, location, openingHours,dietary, image_url)
 VALUES
