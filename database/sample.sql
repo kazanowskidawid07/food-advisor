@@ -4,9 +4,15 @@ USE food_advisor;
 INSERT INTO users (username, email, hashedPassword, role) VALUES
 ('chr123', 'chris@gmail.com', 'notrealpassword1', 'owner'),
 ('daw123', 'dawid@outlook.com', 'notrealpassword2', 'owner'),
-('arm123', 'armaan@icloud.com', 'notrealpassword3', 'admin'),
+('arm123', 'armaan@icloud.com', 'notrealpassword3', 'owner'),
 ('zak123', 'zak@gmail.com', 'notrealpassword4', 'customer'),
 ('kev123', 'kevin@hotmail.com', 'notrealpassword5', 'customer');
+
+/*setting an admin after registering an account*/
+/* UPDATE users SET role="admin" WHERE email="youremail";*/
+
+/*setting an owner after registering an account*/
+/* UPDATE users SET role="owner" WHERE email="youremail";*/
 
 INSERT INTO restaurants
 (ownerID, restaurant_name, cuisine, location, openingHours,dietary, image_url)
