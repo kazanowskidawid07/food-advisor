@@ -18,7 +18,7 @@ function escapeHTML(str) {
         .replace(/'/g, "&#39;");
 }
 
-// Star click events
+// star click events
 stars.forEach(function (star, index) {
     star.addEventListener("click", function () {
         rating = index + 1;
@@ -33,7 +33,7 @@ function updateStars() {
     });
 }
 
-// Load live restaurant details, menu, and reviews from MySQL
+// load live restaurant details, menu, and reviews from MySQL
 async function loadRestaurantDetails() {
     if (!restaurantID) {
         document.getElementById("restaurant-info").innerHTML = "<h2>Restaurant not found</h2><p>Missing restaurant ID in URL.</p>";
@@ -52,7 +52,7 @@ async function loadRestaurantDetails() {
         const menu = data.menu || [];
         const reviews = data.reviews || [];
 
-        // Calculate average rating from live reviews
+        // calculate average rating from live reviews
         let avgText = "No ratings yet";
         if (reviews.length > 0) {
             const total = reviews.reduce((sum, rev) => sum + Number(rev.rating || 0), 0);
@@ -60,7 +60,7 @@ async function loadRestaurantDetails() {
             avgText = `${avg}/5 (${reviews.length} review${reviews.length === 1 ? "" : "s"})`;
         }
 
-        // 1. Render Restaurant Info
+        // 1. render restaurant info
         const infoSection = document.getElementById("restaurant-info");
         infoSection.innerHTML = `
             <h2>${escapeHTML(r.restaurant_name)}</h2>
@@ -70,7 +70,7 @@ async function loadRestaurantDetails() {
             <p><strong>Rating:</strong> ${escapeHTML(avgText)}</p>
         `;
 
-        // 2. Render Live Menu
+        // 2. render live menu
         const menuSection = document.querySelector(".menu-section");
         if (menuSection) {
             if (menu.length === 0) {
@@ -90,7 +90,7 @@ async function loadRestaurantDetails() {
             }
         }
 
-        // 3. Render Live Customer Reviews with Reviewer Username
+        // 3. render live customer reviews with reviewer username
         const reviewsContainer = document.getElementById("reviews-container");
         let reviewsHTML = `
             <p>Read some of the reviews left by other customers!</p>
@@ -120,7 +120,7 @@ async function loadRestaurantDetails() {
     }
 }
 
-// Submit review to MySQL via POST /api/reviews
+// submit review to MySQL via POST /api/reviews
 submitButton.addEventListener("click", async function () {
     const comment = reviewText.value.trim();
 
@@ -147,7 +147,7 @@ submitButton.addEventListener("click", async function () {
             return;
         }
 
-        // Reset form and reload live reviews + average rating
+        // reset form and reload live reviews + average rating
         rating = 0;
         ratingValue.textContent = "0";
         updateStars();

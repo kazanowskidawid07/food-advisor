@@ -3,7 +3,7 @@ const registerForm = document.getElementById('registerForm');
 
 registerForm.addEventListener('submit', async function(event) {
 
-    // Prevents the page from refreshing
+    // prevents the page from refreshing
     event.preventDefault();
 
     // recieve the data entered by user
@@ -12,7 +12,7 @@ registerForm.addEventListener('submit', async function(event) {
     const password = document.getElementById('password').value;
     const confirmPassword = document.getElementById('confirm-password').value;
 
-    // Check if passwords match
+    // check if passwords match
     if (password !== confirmPassword) {
         alert('Passwords do not match!');
         return;
@@ -20,7 +20,7 @@ registerForm.addEventListener('submit', async function(event) {
 
     try {
 
-        // Send registration details to the Node.js backend
+        // send registration details to the Node.js backend
         const response = await fetch('/api/register', {
             method: 'POST',
             headers: {
@@ -36,7 +36,7 @@ registerForm.addEventListener('submit', async function(event) {
         // retrieve response from the backend
         const data = await response.json();
 
-        // Check if registration was successful
+        // check if registration was successful
         if (!response.ok) {
             alert(data.message);
             return;
@@ -44,7 +44,7 @@ registerForm.addEventListener('submit', async function(event) {
 
         alert(data.message);
 
-        // Clear the registration form
+        // clear the registration form
         registerForm.reset();
 
     } catch (error) {

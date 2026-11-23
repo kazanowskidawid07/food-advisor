@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const db = require('../db');
 
-// Helper to validate image_url (allows empty, local ../images/ paths, or http/https URLs)
+// helper to validate image_url (allows empty, local ../images/ paths, or http/https URLs)
 function isValidImageUrl(url) {
     if (!url || url.trim() === '') return true;
     const trimmed = url.trim();
@@ -12,7 +12,7 @@ function isValidImageUrl(url) {
     return trimmed.startsWith('../images/') || trimmed.startsWith('http://') || trimmed.startsWith('https://');
 }
 
-// Middleware: verify logged-in user has the 'owner' role in MySQL
+// middleware: verify logged-in user has the 'owner' role in MySQL
 function requireOwner(req, res, next) {
     const userID = req.cookies.userID;
     if (!userID) {

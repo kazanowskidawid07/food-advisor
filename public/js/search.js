@@ -1,4 +1,4 @@
-// Get filter elements and container from the page
+// get filter elements and container from the page
 const cuisineFilter = document.getElementById("cuisineFilter");
 const searchBar = document.getElementById("restaurantSearch");
 const priceFilter = document.getElementById("priceFilter");
@@ -14,7 +14,7 @@ function getPriceTier(avgPrice) {
     return "expensive";
 }
 
-// Escape user-generated text to prevent XSS
+// escape user-generated text to prevent XSS
 function escapeHTML(str) {
     if (!str) return "";
     return String(str)
@@ -25,7 +25,7 @@ function escapeHTML(str) {
         .replace(/'/g, "&#39;");
 }
 
-// Pick custom image_url first, then fallback by cuisine, or return blank if none
+// pick custom image_url first, then fallback by cuisine, or return blank if none
 function getRestaurantImage(restaurant) {
     if (restaurant.image_url && restaurant.image_url.trim() !== "") {
         return restaurant.image_url.trim();
@@ -37,7 +37,7 @@ function getRestaurantImage(restaurant) {
     return "";
 }
 
-// Dynamically populate Cuisine and Location dropdowns from live database rows
+// dynamically populate Cuisine and Location dropdowns from live database rows
 function populateFilterOptions(restaurants) {
     if (cuisineFilter) {
         const cuisines = [...new Set(
@@ -58,7 +58,7 @@ function populateFilterOptions(restaurants) {
     }
 }
 
-// Render restaurant cards into .restaurant-container
+// render restaurant cards into .restaurant-container
 function renderRestaurants(restaurants) {
     if (!restaurantContainer) return;
 
@@ -97,7 +97,7 @@ function renderRestaurants(restaurants) {
     }).join("");
 }
 
-// Filter dynamically rendered cards whenever a dropdown or search input changes
+// filter dynamically rendered cards whenever a dropdown or search input changes
 function filterRestaurants() {
     const selectedCuisine = cuisineFilter ? cuisineFilter.value.toLowerCase() : "";
     const selectedPrice = priceFilter ? priceFilter.value.toLowerCase() : "";
@@ -128,7 +128,7 @@ function filterRestaurants() {
     });
 }
 
-// Fetch live restaurants from the backend API on page load
+// fetch live restaurants from the backend API on page load
 async function loadRestaurants() {
     try {
         const response = await fetch("/api/restaurants");
@@ -146,12 +146,12 @@ async function loadRestaurants() {
     }
 }
 
-// Attach event listeners
+// attach event listeners
 if (cuisineFilter) cuisineFilter.addEventListener("change", filterRestaurants);
 if (priceFilter) priceFilter.addEventListener("change", filterRestaurants);
 if (locationFilter) locationFilter.addEventListener("change", filterRestaurants);
 if (dietaryFilter) dietaryFilter.addEventListener("change", filterRestaurants);
 if (searchBar) searchBar.addEventListener("input", filterRestaurants);
 
-// Initialize page
+// initialize page
 loadRestaurants();
