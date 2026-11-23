@@ -12,6 +12,25 @@ function isValidImageUrl(url) {
     return trimmed.startsWith('../images/') || trimmed.startsWith('http://') || trimmed.startsWith('https://');
 }
 
+// Middleware: verify logged-in user has the 'owner' role in MySQL
+function requireOwner(req, res, next) {
+    const userID = req.cookies.userID;
+    if (!userID) {
+        return res.status(401).json({ message: 'You must be logged in.' });
+    }
+
+    db.query('SELECT role FROM users WHERE userID = ?', [userID], function(err, results) {
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ message: 'Database error verifying role.' });
+        }
+        if (results.length === 0 || results[0].role !== 'owner') {
+            return res.status(403).json({ message: 'Access denied. Restaurant owner role required.' });
+        }
+        next();
+    });
+}
+
 // GET /api/restaurants - fetch all restaurants + average menu price
 router.get('/', function(req, res) {
     let sql = `
@@ -44,11 +63,8 @@ router.get('/', function(req, res) {
 });
 
 // GET /api/restaurants/owner/mine - fetch restaurants owned by the logged-in user
-router.get('/owner/mine', function(req, res) {
+router.get('/owner/mine', requireOwner, function(req, res) {
     const userID = req.cookies.userID;
-    if (!userID) {
-        return res.status(401).json({ message: 'You must be logged in.' });
-    }
 
     db.query('SELECT * FROM restaurants WHERE ownerID = ?', [userID], function(err, results) {
         if (err) {
@@ -103,12 +119,8 @@ router.get('/:id', function(req, res) {
 });
 
 // POST /api/restaurants - create a new restaurant for the logged-in owner
-router.post('/', function(req, res) {
+router.post('/', requireOwner, function(req, res) {
     const userID = req.cookies.userID;
-    if (!userID) {
-        return res.status(401).json({ message: 'You must be logged in.' });
-    }
-
     const { restaurant_name, cuisine, location, openingHours, image_url, dietary } = req.body;
 
     if (!restaurant_name || !location) {
@@ -144,14 +156,9 @@ router.post('/', function(req, res) {
 });
 
 // PUT /api/restaurants/:id - update an existing restaurant owned by the logged-in user
-router.put('/:id', function(req, res) {
+router.put('/:id', requireOwner, function(req, res) {
     const userID = req.cookies.userID;
     const restaurantID = req.params.id;
-
-    if (!userID) {
-        return res.status(401).json({ message: 'You must be logged in.' });
-    }
-
     const { restaurant_name, cuisine, location, openingHours, image_url, dietary } = req.body;
 
     if (!restaurant_name || !location) {
@@ -189,14 +196,9 @@ router.put('/:id', function(req, res) {
 });
 
 // POST /api/restaurants/:id/menu - add a menu item to an owned restaurant
-router.post('/:id/menu', function(req, res) {
+router.post('/:id/menu', requireOwner, function(req, res) {
     const userID = req.cookies.userID;
     const restaurantID = req.params.id;
-
-    if (!userID) {
-        return res.status(401).json({ message: 'You must be logged in.' });
-    }
-
     const { itemName, description, price } = req.body;
 
     if (!itemName || price === undefined) {
@@ -229,13 +231,9 @@ router.post('/:id/menu', function(req, res) {
 });
 
 // DELETE /api/restaurants/menu/:itemId - delete a menu item from an owned restaurant
-router.delete('/menu/:itemId', function(req, res) {
+router.delete('/menu/:itemId', requireOwner, function(req, res) {
     const userID = req.cookies.userID;
     const itemId = req.params.itemId;
-
-    if (!userID) {
-        return res.status(401).json({ message: 'You must be logged in.' });
-    }
 
     const sql = `
         DELETE menuItems FROM menuItems

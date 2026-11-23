@@ -25,6 +25,11 @@ async function loadOwnerRestaurants(selectIdAfterLoad = null) {
             window.location.href = 'login.html';
             return;
         }
+        if (response.status === 403) {
+            alert('Access denied. Only restaurant owners can access this page.');
+            window.location.href = 'home.html';
+            return;
+        }
 
         myRestaurants = await response.json();
 
