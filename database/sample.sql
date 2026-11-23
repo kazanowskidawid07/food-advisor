@@ -1,15 +1,15 @@
 USE food_advisor;
 
+/* place holder accounts, restaurants and reviews*/
 INSERT INTO users (username, email, hashedPassword, role) VALUES
-('chr123', 'chris@gmail.com', 'notrealpassword1, 'owner'),
+('chr123', 'chris@gmail.com', 'notrealpassword1', 'owner'),
 ('daw123', 'dawid@outlook.com', 'notrealpassword2', 'owner'),
 ('arm123', 'armaan@icloud.com', 'notrealpassword3', 'owner'),
 ('zak123', 'zak@gmail.com', 'notrealpassword4', 'customer'),
-('kev123', 'kevin@hotmail.com', 'notrealpassword5', 'customer'),
-('admin', 'admin@outlook.com', 'notrealpassword6', 'admin');
+('kev123', 'kevin@hotmail.com', 'notrealpassword5', 'customer');
 
 INSERT INTO restaurants
-(ownerID, restaurant_name, cuisine, location, openingHours, image_url)
+(ownerID, restaurant_name, cuisine, location, openingHours,dietary, image_url)
 VALUES
 (
     (SELECT userID FROM users WHERE email = 'chris@gmail.com'),
@@ -17,6 +17,7 @@ VALUES
     'Indian',
     'Edinburgh',
     '11am-9pm',
+    'Vegan',
     'https://wallpapers.com/images/hd/traditional-thali-platter-indian-food-7ppdmw8bs4n1f36j.jpg'
 ),
 (
@@ -25,6 +26,7 @@ VALUES
     'Polish',
     'Dunfermlin',
     '10am-10pm',
+    'Gluten-Free',
     'https://zakladyboleslawiec.com/media/magefan_blog/PHOTO-2024-12-12-17-43-09.jpg'
 ),
 (
@@ -33,11 +35,48 @@ VALUES
     'Arab',
     'Bruntsfield',
     '3-10pm',
+    'Halal',
     'https://wallpaperaccess.com/full/10008142.jpg'
 );
 
-
-USE food_advisor;
+INSERT INTO menuItems (restaurantID, itemName, description, price)
+VALUES
+(
+    (SELECT restaurantID FROM restaurants WHERE restaurant_name = 'ChrisEats'),
+    'Chicken Biryani',
+    'Tender, savory chicken bursting with flavour in delicious rice.',
+    12.50
+),
+(
+    (SELECT restaurantID FROM restaurants WHERE restaurant_name = 'ChrisEats'),
+    'Lamb Biryani',
+    'Tender, savory lamb bursting with flavour in delicious rice.',
+    10.00
+),
+(
+    (SELECT restaurantID FROM restaurants WHERE restaurant_name = 'PolishMeats'),
+    'Pierogi',
+    'Polish dumplings boiled to perfection.',
+    9.50
+),
+(
+    (SELECT restaurantID FROM restaurants WHERE restaurant_name = 'PolishMeats'),
+    'Zurek',
+    'Tangy soup, served with poatoes and egg',
+    11.00
+),
+(
+    (SELECT restaurantID FROM restaurants WHERE restaurant_name = 'Arab Street'),
+    'Chicken Shawarma',
+    'Marinated chicken complimented with delicious sauces and fresh vegetables.',
+    10.50
+),
+(
+    (SELECT restaurantID FROM restaurants WHERE restaurant_name = 'Arab Street'),
+    'Falafel Wrap',
+    'Crispy falafel with fresh vegetables and special sauce',
+    8.50
+);
 
 INSERT INTO reviews
 (userID, restaurantID, rating, comment)
